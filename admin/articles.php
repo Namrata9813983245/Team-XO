@@ -1,5 +1,34 @@
 <?php
+session_start();
+define('APP_DEPTH', 1);
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
+$__u = current_user();
+$db = getDB();
+$error = null; $success = null;
 
+if (isset($_GET['delete'])) {
+    $db->prepare("DELETE FROM articles WHERE id=?")->execute([$_GET['delete']]);
+    header('Location: articles.php'); exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = trim($_POST['title'] ?? '');
+    $content = trim($_POST['content'] ?? '');
+    if ($title === '' || $content === '') {
+        $error = 'Title and content are required.';
+    } else {
+        $uploaded = handle_image_upload('image', __DIR__ . '/../assets/uploads/crops', 'article');
+        $image = $uploaded ? base_url('assets/uploads/crops/'.$uploaded) : 'https://loremflickr.com/600/400/farm,agriculture?lock='.crc32($title);
+        $stmt = $db->prepare("INSERT INTO articles (title,content,image) VALUES (?,?,?)");
+        $stmt->execute([$title, $content, $image]);
+        $success = 'Article published to the user home page.';
+    }
+}
+
+$articles = $db->query("SELECT * FROM articles ORDER BY id DESC")->fetchAll();
+$pageTitle = 'Articles';
+require __DIR__ . '/../includes/header.php';
 ?>
 <div class="dash-shell">
   <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
