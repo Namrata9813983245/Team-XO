@@ -48,3 +48,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$fields = $db->query("SELECT * FROM recommendation_fields ORDER BY sort_order ASC, id ASC")->fetchAll();
+$pageTitle = 'Recommendation Fields';
+require __DIR__ . '/../includes/header.php';
+?>
+<div class="dash-shell">
+  <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
+  <div class="dash-main">
+    <div class="dash-head"><div><h1>Recommendation Fields</h1><p style="margin:4px 0 0;color:var(--ink-soft);">Control exactly which inputs appear on the "Recommend a Crop" form.</p></div></div>
+
+    <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+    <?php if ($error): ?><div class="alert alert-error"><?= e($error) ?></div><?php endif; ?>
+    <?php if ($m = flash('error')): ?><div class="alert alert-error"><?= e($m) ?></div><?php endif; ?>
+    <?php if ($m = flash('success')): ?><div class="alert alert-success"><?= e($m) ?></div><?php endif; ?>
+
+    <div class="card">
+      <h3>Add a new field</h3>
+      <p style="margin-top:-8px;">Core fields (soil type, temperature, humidity, moisture) power the rule engine's scoring. Custom fields you add here appear on the form for context, but only core fields are currently scored automatically.</p>
+      <form method="POST">
+        <div class="field-row">
+          <div class="field"><label for="field_key">Field key</label><input type="text" id="field_key" name="field_key" required placeholder="e.g. rainfall"></div>
+          <div class="field"><label for="label">Display label</label><input type="text" id="label" name="label" required placeholder="e.g. Rainfall"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="field_type">Input type</label>
+            <select id="field_type" name="field_type">
+              <option value="number">Number</option>
+              <option value="select">Dropdown</option>
+            </select>
+          </div>
+          <div class="field"><label for="unit">Unit</label><input type="text" id="unit" name="unit" placeholder="e.g. mm"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="min_value">Min value (number fields)</label><input type="number" step="0.1" id="min_value" name="min_value"></div>
+          <div class="field"><label for="max_value">Max value (number fields)</label><input type="number" step="0.1" id="max_value" name="max_value"></div>
+        </div>
+        <div class="field"><label for="options">Dropdown options (comma-separated, dropdown fields only)</label><input type="text" id="options" name="options" placeholder="e.g. Low,Medium,High"></div>
+        <button class="btn" type="submit">+ Add field</button>
+      </form>
+    </div>
