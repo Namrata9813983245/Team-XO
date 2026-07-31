@@ -89,3 +89,37 @@ require __DIR__ . '/../includes/header.php';
         <button class="btn" type="submit">+ Add field</button>
       </form>
     </div>
+    
+    <div class="card">
+      <h3>All fields</h3>
+      <table class="data-table">
+        <thead><tr><th>Key</th><th>Label</th><th>Type</th><th>Range / Options</th><th>Core</th><th>Active</th><th></th></tr></thead>
+        <tbody>
+          <?php foreach ($fields as $f): ?>
+          <tr>
+            <td class="mono"><?= e($f['field_key']) ?></td>
+            <td><?= e($f['label']) ?></td>
+            <td><?= e($f['field_type']) ?></td>
+            <td><?= $f['field_type']==='select' ? e($f['options']) : e($f['min_value']).'–'.e($f['max_value']).' '.e($f['unit']) ?></td>
+            <td><?= $f['is_core'] ? '<span class="badge badge-admin">Core</span>' : '<span class="badge badge-user">Custom</span>' ?></td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" onchange="window.location='?toggle=<?= $f['id'] ?>'" <?= $f['active'] ? 'checked' : '' ?>>
+                <span class="slider-toggle"></span>
+              </label>
+            </td>
+            <td>
+              <?php if (!$f['is_core']): ?>
+                <a href="?delete=<?= $f['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Remove this field?');">Delete</a>
+              <?php else: ?>
+                <span style="font-size:.78rem;color:var(--ink-soft);">protected</span>
+              <?php endif; ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<?php require __DIR__ . '/../includes/footer.php'; ?>
