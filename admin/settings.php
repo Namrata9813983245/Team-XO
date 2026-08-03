@@ -67,3 +67,37 @@ require __DIR__ . '/../includes/header.php';
         <button class="btn" type="submit">Save profile</button>
       </form>
     </div>
+    <div class="card">
+      <h3>Change password</h3>
+      <form method="POST">
+        <input type="hidden" name="action" value="password">
+        <div class="field"><label for="current_password">Current password</label><input type="password" id="current_password" name="current_password" required></div>
+        <div class="field-row">
+          <div class="field"><label for="new_password">New password</label><input type="password" id="new_password" name="new_password" required></div>
+          <div class="field"><label for="confirm_password">Confirm new password</label><input type="password" id="confirm_password" name="confirm_password" required></div>
+        </div>
+        <button class="btn btn-outline" type="submit">Update password</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Site settings</h3>
+      <p style="margin-top:-8px;">Changes here update the public site — including the About Us page and footer.</p>
+      <form method="POST">
+        <input type="hidden" name="action" value="site">
+        <div class="field-row">
+          <div class="field"><label for="site_name">Site name</label><input type="text" id="site_name" name="site_name" value="<?= e(get_setting('site_name')) ?>"></div>
+          <div class="field"><label for="tagline">Tagline</label><input type="text" id="tagline" name="tagline" value="<?= e(get_setting('tagline')) ?>"></div>
+        </div>
+        <div class="field"><label for="about_us">About Us content</label><textarea id="about_us" name="about_us" rows="4"><?= e(get_setting('about_us')) ?></textarea></div>
+        <div class="field-row">
+          <div class="field"><label for="contact_email">Contact email</label><input type="email" id="contact_email" name="contact_email" value="<?= e(get_setting('contact_email')) ?>"></div>
+          <div class="field"><label for="contact_phone">Contact phone</label><input type="text" id="contact_phone" name="contact_phone" value="<?= e(get_setting('contact_phone')) ?>"></div>
+        </div>
+        <div class="field"><label for="contact_address">Contact address</label><input type="text" id="contact_address" name="contact_address" value="<?= e(get_setting('contact_address')) ?>"></div>
+        <button class="btn" type="submit">Save site settings</button>
+      </form>
+    </div>
+  </div>
+</div>
+<?php require __DIR__ . '/../includes/footer.php'; ?>
