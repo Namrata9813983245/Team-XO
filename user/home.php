@@ -1,4 +1,16 @@
+<?php
+session_start();
+define('APP_DEPTH', 1);
+require_once __DIR__ . '/../includes/functions.php';
+require_login();
+$__u = current_user();
+if ($__u['role'] === 'admin') { header('Location: ../admin/dashboard.php'); exit; }
 
+$reading = get_live_sensor_reading();
+$articles = getDB()->query("SELECT * FROM articles ORDER BY id DESC")->fetchAll();
+$pageTitle = 'Home';
+require __DIR__ . '/../includes/header.php';
+?>
 <div class="dash-shell">
   <?php require __DIR__ . '/../includes/user_sidebar.php'; ?>
   <div class="dash-main">
