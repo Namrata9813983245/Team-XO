@@ -1,22 +1,4 @@
-<?php
-session_start();
-define('APP_DEPTH', 1);
-require_once __DIR__ . '/../includes/functions.php';
-require_admin();
-$__u = current_user();
-$db = getDB();
 
-$history = $db->query("
-  SELECT h.*, u.name AS user_name, u.email AS user_email, c.name AS crop_name, c.image AS crop_image
-  FROM recommendation_history h
-  JOIN users u ON u.id = h.user_id
-  LEFT JOIN crops c ON c.id = h.recommended_crop_id
-  ORDER BY h.id DESC
-")->fetchAll();
-
-$pageTitle = 'All Recommendation History';
-require __DIR__ . '/../includes/header.php';
-?>
 <div class="dash-shell">
   <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
   <div class="dash-main">
