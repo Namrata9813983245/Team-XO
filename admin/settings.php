@@ -44,3 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$__u['id']]);
     $__u = $stmt->fetch();
 }
+$pageTitle = 'Settings';
+require __DIR__ . '/../includes/header.php';
+?>
+<div class="dash-shell">
+  <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
+  <div class="dash-main">
+    <div class="dash-head"><div><h1>Settings</h1><p style="margin:4px 0 0;color:var(--ink-soft);">Manage your admin profile and site-wide content.</p></div></div>
+
+    <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+    <?php if ($error): ?><div class="alert alert-error"><?= e($error) ?></div><?php endif; ?>
+
+    <div class="card">
+      <h3>Your profile</h3>
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="profile">
+        <div class="settings-avatar-row">
+          <img src="<?= $__u['profile_picture'] ? base_url('assets/uploads/profiles/'.e($__u['profile_picture'])) : 'https://loremflickr.com/100/100/portrait?lock='.$__u['id'] ?>" alt="">
+          <div class="field" style="margin:0;flex:1;"><label for="profile_picture">Profile picture</label><input type="file" id="profile_picture" name="profile_picture" accept="image/*"></div>
+        </div>
+        <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" value="<?= e($__u['name']) ?>" required></div>
+        <button class="btn" type="submit">Save profile</button>
+      </form>
+    </div>
