@@ -1,3 +1,15 @@
+<?php
+session_start();
+define('APP_DEPTH', 1);
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
+$__u = current_user();
+$db = getDB();
+
+$cropCount = (int)$db->query("SELECT COUNT(*) c FROM crops")->fetch()['c'];
+$userCount = (int)$db->query("SELECT COUNT(*) c FROM users WHERE role='user'")->fetch()['c'];
+$historyCount = (int)$db->query("SELECT COUNT(*) c FROM recommendation_history")->fetch()['c'];
+$msgCount = (int)$db->query("SELECT COUNT(*) c FROM contact_messages")->fetch()['c'];
 
   <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
   <div class="dash-main">
