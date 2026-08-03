@@ -11,6 +11,24 @@ $userCount = (int)$db->query("SELECT COUNT(*) c FROM users WHERE role='user'")->
 $historyCount = (int)$db->query("SELECT COUNT(*) c FROM recommendation_history")->fetch()['c'];
 $msgCount = (int)$db->query("SELECT COUNT(*) c FROM contact_messages")->fetch()['c'];
 
+$recentHistory = $db->query("
+  SELECT h.*, u.name AS user_name, c.name AS crop_name, c.image AS crop_image
+  FROM recommendation_history h
+  JOIN users u ON u.id = h.user_id
+  LEFT JOIN crops c ON c.id = h.recommended_crop_id
+  ORDER BY h.id DESC LIMIT 6
+")->fetchAll();
+
+$topCrops = $db->query("
+  SELECT c.name, c.image, COUNT(h.id) AS n
+  FROM crops c LEFT JOIN recommendation_history h ON h.recommended_crop_id = c.id
+  GROUP BY c.id ORDER BY n DESC LIMIT 5
+")->fetchAll();
+
+$pageTitle = 'Admin dash';
+require __DIR__ . '/../includes/header.php';
+?>
+<div class="dash-shell">
   <?php require __DIR__ . '/../includes/admin_sidebar.php'; ?>
   <div class="dash-main">
     <div class="dash-head">
