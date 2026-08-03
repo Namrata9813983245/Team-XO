@@ -29,6 +29,39 @@ if (isset($_GET['edit'])) {
     $stmt->execute([$_GET['edit']]);
     $editCrop = $stmt->fetch();
 }
+// Save (create or update)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'] ?? null;
+    $name = trim($_POST['name'] ?? '');
+    $soil = trim($_POST['soil_type'] ?? '');
+    $minT = floatval($_POST['min_temp']); $maxT = floatval($_POST['max_temp']);
+    $minH = floatval($_POST['min_humidity']); $maxH = floatval($_POST['max_humidity']);
+    $minM = floatval($_POST['min_moisture']); $maxM = floatval($_POST['max_moisture']);
+    $season = trim($_POST['season'] ?? 'Any');
+    $desc = trim($_POST['description'] ?? '');
+
+    if ($name === '' || $soil === '') {
+        $error = 'Crop name and soil type are required.';
+    } else {
+        $uploadedImage = handle_image_upload('image', __DIR__ . '/../assets/uploads/crops', 'crop');
+        if ($id) {
+            if ($uploadedImage) {
+                $stmt = $db->prepare("UPDATE crops SET name=?,image=?,soil_type=?,min_temp=?,max_temp=?,min_humidity=?,max_humidity=?,min_moisture=?,max_moisture=?,season=?,description=? WHERE id=?");
+                $stmt->execute([$name, base_url('assets/uploads/crops/'.$uploadedImage), $soil, $minT, $maxT, $minH, $maxH, $minM, $maxM, $season, $desc, $id]);
+            } else {
+                $stmt = $db->prepare("UPDATE crops SET name=?,soil_type=?,min_temp=?,max_temp=?,min_humidity=?,max_humidity=?,min_moisture=?,max_moisture=?,season=?,description=? WHERE id=?");
+                $stmt->execute([$name, $soil, $minT, $maxT, $minH, $maxH, $minM, $maxM, $season, $desc, $id]);
+            }
+            $success = 'Crop updated successfully.';
+        } else {
+            $image = $uploadedImage ? base_url('assets/uploads/crops/'.$uploadedImage) : 'https://loremflickr.com/500/350/'.urlencode(strtolower($name)).',crop?lock='.crc32($name);
+            $stmt = $db->prepare("INSERT INTO crops (name,image,soil_type,min_temp,max_temp,min_humidity,max_humidity,min_moisture,max_moisture,season,description) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt->execute([$name, $image, $soil, $minT, $maxT, $minH, $maxH, $minM, $maxM, $season, $desc]);
+            $success = 'Crop added successfully.';
+        }
+        $editCrop = null;
+    }
+}
 
 
 $crops = $db->query("SELECT * FROM crops ORDER BY name ASC")->fetchAll();
