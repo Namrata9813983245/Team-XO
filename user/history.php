@@ -1,25 +1,4 @@
-<?php
-session_start();
-define('APP_DEPTH', 1);
-require_once __DIR__ . '/../includes/functions.php';
-require_login();
-$__u = current_user();
-if ($__u['role'] === 'admin') { header('Location: ../admin/dashboard.php'); exit; }
 
-$stmt = getDB()->prepare("
-  SELECT h.*, c.name AS crop_name, c.image AS crop_image, c.soil_type
-  FROM recommendation_history h
-  LEFT JOIN crops c ON c.id = h.recommended_crop_id
-  WHERE h.user_id = ?
-  ORDER BY h.id DESC
-");
-$stmt->execute([$__u['id']]);
-$history = $stmt->fetchAll();
-
-$pageTitle = 'Recommendation History';
-require __DIR__ . '/../includes/header.php';
-?>
-<div class="dash-shell">
   <?php require __DIR__ . '/../includes/user_sidebar.php'; ?>
   <div class="dash-main">
     <div class="dash-head">
