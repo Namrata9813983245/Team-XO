@@ -7,7 +7,46 @@ $__u = current_user();
 if ($__u['role'] === 'admin') { header('Location: ../admin/dashboard.php'); exit; }
 
 $error = null; $success = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    if ($action === 'profile') {
+        $name = trim($_POST['name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $location = trim($_POST['location'] ?? '');
+        $pic = handle_image_upload('profile_picture', __DIR__ . '/../assets/uploads/profiles', 'user' . $__u['id']);
 
+        if ($pic) {
+            $stmt = getDB()->prepare("UPDATE users SET name=?, phone=?, location=?, profile_picture=? WHERE id=?");
+            $stmt->execute([$name, $phone, $location, $pic, $__u['id']]);
+        } else {
+            $stmt = getDB()->prepare("UPDATE users SET name=?, phone=?, location=? WHERE id=?");
+            $stmt->execute([$name, $phone, $location, $__u['id']]);
+        }
+        $success = 'Profile updated successfully.';
+    } elseif ($action === 'password') {
+        $current = $_POST['current_password'] ?? '';
+        $new = $_POST['new_password'] ?? '';
+        $confirm = $_POST['confirm_password'] ?? '';
+        if (!password_verify($current, $__u['password'])) {
+            $error = 'Current password is incorrect.';
+        } elseif (strlen($new) < 6) {
+            $error = 'New password must be at least 6 characters.';
+        } elseif ($new !== $confirm) {
+            $error = 'New passwords do not match.';
+        } else {
+            $stmt = getDB()->prepare("UPDATE users SET password=? WHERE id=?");
+            $stmt->execute([password_hash($new, PASSWORD_DEFAULT), $__u['id']]);
+            $success = 'Password changed successfully.';
+        }
+    }
+    $stmt = getDB()->prepare("SELECT * FROM users WHERE id=?");
+    $stmt->execute([$__u['id']]);
+    $__u = $stmt->fetch();
+}
+
+$pageTitle = 'Settings';
+require __DIR__ . '/../includes/header.php';
+?>
 
 <div class="dash-shell">
   <?php require __DIR__ . '/../includes/user_sidebar.php'; ?>
