@@ -1,37 +1,4 @@
-<?php
-session_start();
-define('APP_DEPTH', 1);
-require_once __DIR__ . '/../includes/functions.php';
-require_login();
-$__u = current_user();
-if ($__u['role'] === 'admin') { header('Location: ../admin/dashboard.php'); exit; }
 
-$fields = get_active_fields();
-$results = null;
-$submittedInput = [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = [];
-    foreach ($fields as $f) {
-        $val = $_POST[$f['field_key']] ?? '';
-        $input[$f['field_key']] = $val;
-        $submittedInput[$f['field_key']] = $val;
-    }
-    $results = recommend_crops($input, 4);
-
-    $top = $results[0] ?? null;
-    $stmt = getDB()->prepare("INSERT INTO recommendation_history (user_id, input_data, recommended_crop_id, match_score) VALUES (?,?,?,?)");
-    $stmt->execute([
-        $__u['id'],
-        json_encode($submittedInput),
-        $top ? $top['crop']['id'] : null,
-        $top ? $top['percent'] : null,
-    ]);
-}
-
-$pageTitle = 'Recommend a Crop';
-require __DIR__ . '/../includes/header.php';
-?>
 <div class="dash-shell">
   <?php require __DIR__ . '/../includes/user_sidebar.php'; ?>
   <div class="dash-main">
