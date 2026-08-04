@@ -15,3 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('contact_error', 'Please fill in every field before sending.');
     }
 }
+$back = $_SERVER['HTTP_REFERER'] ?? 'index.php';
+header('Location: ' . $back . '#contact-us');
+exit;
