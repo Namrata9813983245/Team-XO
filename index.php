@@ -64,3 +64,24 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Crop catalog</span>
+      <h2>A growing library of crop profiles</h2>
+      <p>Each crop carries ideal soil, temperature, humidity and moisture ranges — maintained by your admin team.</p>
+    </div>
+    <div class="grid-4">
+      <?php foreach ($crops as $c): ?>
+        <div class="crop-card">
+          <img src="<?= e($c['image']) ?>" alt="<?= e($c['name']) ?>">
+          <div class="crop-body">
+            <span class="crop-tag"><?= e($c['soil_type']) ?> soil</span>
+            <h3 style="margin:0;font-size:1.05rem;"><?= e($c['name']) ?></h3>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
