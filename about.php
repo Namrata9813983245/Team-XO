@@ -32,3 +32,14 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<section class="section" style="background:var(--bg-soft);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Our team's promise</span>
+      <h2>No black boxes, ever</h2>
+      <p>We believe farmers deserve to know exactly why a crop is being recommended. That's why AgroSense is built on clear, editable IF/THEN rules rather than an opaque model — every result comes with a plain-language reason.</p>
+    </div>
+  </div>
+</section>
+
