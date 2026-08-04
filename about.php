@@ -13,4 +13,22 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-
+<section class="section">
+  <div class="container grid-3">
+    <div class="feature-card">
+      <div class="icon">🎯</div>
+      <h3>Our mission</h3>
+      <p>Put transparent, explainable crop guidance in the hands of every grower — not just those with access to expensive agronomists.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🧩</div>
+      <h3>How the rules work</h3>
+      <p>Each crop has a defined soil type and ideal temperature, humidity and moisture range. We score your live conditions against every crop and rank the closest matches.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔧</div>
+      <h3>Always improving</h3>
+      <p>Administrators continually refine crop profiles and recommendation criteria as regional agronomy knowledge grows.</p>
+    </div>
+  </div>
+</section>
