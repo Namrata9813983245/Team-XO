@@ -50,3 +50,17 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<section class="section" style="background:var(--bg-soft);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Why AgroSense</span>
+      <h2>Built for real fields, not spreadsheets</h2>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card"><div class="icon">📡</div><h3>Live IoT dashboard</h3><p>Watch temperature, humidity and soil moisture update in real time, right on your home screen.</p></div>
+      <div class="feature-card"><div class="icon">🧠</div><h3>Transparent rules</h3><p>Every recommendation shows its reasoning — no mystery scores, just clear range comparisons.</p></div>
+      <div class="feature-card"><div class="icon">🛠️</div><h3>Configurable fields</h3><p>Admins can add, edit or retire recommendation criteria as agronomy needs change.</p></div>
+    </div>
+  </div>
+</section>
