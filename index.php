@@ -85,3 +85,11 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="cta-band">
+    <h2>Ready to see what fits your field?</h2>
+    <p>Create a free account, connect your sensor readings, and get your first crop recommendation in under a minute.</p>
+    <a href="register.php" class="btn btn-wheat">Get started free</a>
+  </div>
+</section>
