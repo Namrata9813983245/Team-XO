@@ -3,7 +3,32 @@ session_start();
 define('APP_DEPTH', 0);
 require_once __DIR__ . '/includes/functions.php';
 
+if (current_user()) {
+    $u = current_user();
+    header('Location: ' . ($u['role'] === 'admin' ? 'admin/dashboard.php' : 'user/home.php'));
+    exit;
+}
 
+$error = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $stmt = getDB()->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        // Role-based redirect: admins go to the admin dashboard, everyone else to the user dashboard.
+        header('Location: ' . ($user['role'] === 'admin' ? 'admin/dashboard.php' : 'user/home.php'));
+        exit;
+    } else {
+        $error = 'Incorrect email or password. Please try again.';
+    }
+}
+
+$pageTitle = 'Log in';
+require __DIR__ . '/includes/header.php';
 ?>
 <div class="auth-wrap">
   <div class="auth-visual">
