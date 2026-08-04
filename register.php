@@ -2,7 +2,15 @@
 session_start();
 define('APP_DEPTH', 0);
 require_once __DIR__ . '/includes/functions.php';
+if (current_user()) {
+    $u = current_user();
+    header('Location: ' . ($u['role'] === 'admin' ? 'admin/dashboard.php' : 'user/home.php'));
+    exit;
+}
 
+
+$pageTitle = 'Register';
+require __DIR__ . '/includes/header.php';
 
 ?>
 <div class="auth-wrap">
