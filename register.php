@@ -1,47 +1,4 @@
-<?php
-session_start();
-define('APP_DEPTH', 0);
-require_once __DIR__ . '/includes/functions.php';
 
-if (current_user()) {
-    $u = current_user();
-    header('Location: ' . ($u['role'] === 'admin' ? 'admin/dashboard.php' : 'user/home.php'));
-    exit;
-}
-
-$error = null;
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirm = $_POST['confirm_password'] ?? '';
-    $location = trim($_POST['location'] ?? '');
-
-    if ($name === '' || $email === '' || $password === '') {
-        $error = 'Please fill in all required fields.';
-    } elseif (strlen($password) < 6) {
-        $error = 'Password must be at least 6 characters.';
-    } elseif ($password !== $confirm) {
-        $error = 'Passwords do not match.';
-    } else {
-        $stmt = getDB()->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->fetch()) {
-            $error = 'An account with that email already exists.';
-        } else {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = getDB()->prepare("INSERT INTO users (name,email,password,role,location) VALUES (?,?,?,'user',?)");
-            $stmt->execute([$name, $email, $hash, $location]);
-            $_SESSION['user_id'] = getDB()->lastInsertId();
-            header('Location: user/home.php');
-            exit;
-        }
-    }
-}
-
-$pageTitle = 'Register';
-require __DIR__ . '/includes/header.php';
-?>
 <div class="auth-wrap">
   <div class="auth-visual">
     <div class="brand" style="color:#fff;"><span class="brand-mark">🌾</span> <span class="brand-name"><?= e(get_setting('site_name')) ?></span></div>
