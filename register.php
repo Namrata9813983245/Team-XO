@@ -1,4 +1,10 @@
+<?php
+session_start();
+define('APP_DEPTH', 0);
+require_once __DIR__ . '/includes/functions.php';
 
+
+?>
 <div class="auth-wrap">
   <div class="auth-visual">
     <div class="brand" style="color:#fff;"><span class="brand-mark">🌾</span> <span class="brand-name"><?= e(get_setting('site_name')) ?></span></div>
