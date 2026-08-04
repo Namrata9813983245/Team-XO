@@ -34,3 +34,19 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>From sensor reading to recommendation in four steps</h2>
+      <p>No black-box machine learning — every recommendation traces back to a rule you (or your admin) can inspect and tune.</p>
+    </div>
+    <div class="step-row">
+      <div class="step"><span class="step-num">01</span><h3>Sync sensors</h3><p>Pull live temperature, humidity and soil moisture straight from your field's IoT devices.</p></div>
+      <div class="step"><span class="step-num">02</span><h3>Set soil type</h3><p>Choose your soil type — loamy, sandy, clay, and more — the single biggest driver of crop suitability.</p></div>
+      <div class="step"><span class="step-num">03</span><h3>Run the rules</h3><p>Our rule engine scores every crop in the catalog against your exact conditions.</p></div>
+      <div class="step"><span class="step-num">04</span><h3>Get a ranked match</h3><p>See your best-fit crop plus runners-up, each with a plain-language reason.</p></div>
+    </div>
+  </div>
+</section>
