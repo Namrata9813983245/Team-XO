@@ -93,3 +93,5 @@ require __DIR__ . '/includes/header.php';
     <a href="register.php" class="btn btn-wheat">Get started free</a>
   </div>
 </section>
+
+<?php require __DIR__ . '/includes/footer.php'; ?>
