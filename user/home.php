@@ -67,7 +67,7 @@ require __DIR__ . '/../includes/header.php';
       <!-- RIGHT HALF: photographs + real articles -->
       <div>
         <div class="photo-strip">
-          <img src="https://loremflickr.com/500/700/farmer,sunrise?lock=11" alt="Farmer at sunrise">
+          <img src="images/image.png" alt="Farmer at sunrise">
           <img src="https://loremflickr.com/500/340/irrigation,field?lock=12" alt="Irrigation">
           <img src="https://loremflickr.com/500/340/harvest,crop?lock=13" alt="Harvest">
         </div>
